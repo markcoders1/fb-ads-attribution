@@ -5,14 +5,18 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start:worker": "node worker.js",
+    "dev": "concurrently -n api,worker -c blue,green \"nodemon index.js\" \"nodemon worker.js\""
   },
   "dependencies": {
+    "bullmq": "^5.34.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "ioredis": "^5.4.2",
     "pg": "^8.20.0"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "nodemon": "^3.0.1"
   }
 }
