@@ -32,11 +32,17 @@ app.post('/webhook', (req, res) => {
 
   body.entry?.forEach(entry => {
     entry.messaging?.forEach(event => {
-      console.log('[DM Received]', JSON.stringify(event, null, 2));
+        console.log('[DM Received]', JSON.stringify(event, null, 2));
     });
   });
 
   return res.sendStatus(200);
+});
+
+app.post('/webhook-manychats', (req, res) => {
+  const body = req.body;
+  console.log(body);
+  return res.status(200).json({ message: 'Webhook received', body });
 });
 
 app.listen(PORT, () => {
