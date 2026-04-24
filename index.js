@@ -92,7 +92,8 @@ app.post(
       for (const entry of entries) {
         const events = entry.messaging || [];
         for (const event of events) {
-          if (!event.message?.mid) continue;
+          if(!event.referral)console.log("[META Webhook] No referral data in message",JSON.stringify(event,null,2));
+          if (!event?.message?.mid || event?.read?.mid) continue;
           await dmQueue.add(
             'save-dm',
             { event },
@@ -124,6 +125,7 @@ app.post('/webhook-manychats', async (req, res) => {
   try {
     const data = await latestDmForSender(String(igId));
     console.log(data);
+    console.log("[ManyChat webhook] data sent",data);
     return res.status(200).json({ data });
   } catch (err) {
     console.error('[ManyChat webhook]', err);
