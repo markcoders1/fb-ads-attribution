@@ -5,8 +5,10 @@ const { Worker } = require('bullmq');
 const { QUEUE_NAME } = require('./lib/constants');
 const { extractDmPayload } = require('./lib/dmPayload');
 const { insertInstagramDm } = require('./lib/db');
+const { fetchCampaignAndAdsetFromAdId } = require('./lib/metaMarketing');
 
 const REDIS_URL = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
+const FB_ACCESS_TOKEN = process.env.FB_ACCESS_TOKEN
 const WORKER_CONCURRENCY = Math.max(
   1,
   Number.parseInt(process.env.WORKER_CONCURRENCY || '20', 10)
@@ -23,6 +25,14 @@ const worker = new Worker(
     const payload = extractDmPayload(event);
     if (!payload) {
       return { skipped: true };
+    }
+    if (payload.ad_id && FB_ACCESS_TOKEN) {
+      const ids = await fetchCampaignAndAdsetFromAdId(payload.ad_id, FB_ACCESS_TOKEN);
+      payload.campaign_id = ids.campaign_id;
+      payload.adset_id = ids.adset_id;
+    } else {
+      payload.campaign_id = null;
+      payload.adset_id = null;
     }
     const inserted = await insertInstagramDm(payload);
     return { inserted: !!inserted, mid: payload.message_mid };

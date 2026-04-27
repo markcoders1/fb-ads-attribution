@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS instagram_dms (
   referral_source TEXT,
   referral_type TEXT,
   ad_id TEXT,
+  campaign_id TEXT,
+  adset_id TEXT,
   referral_json JSONB,
   raw_event JSONB NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
