@@ -92,7 +92,7 @@ app.post(
       for (const entry of entries) {
         const events = entry.messaging || [];
         for (const event of events) {
-          if(!event.referral)console.log("[META Webhook] No referral data in message",JSON.stringify(event,null,2));
+          if(!event?.referral?.ad_id)console.log("[META Webhook] No referral data in message",JSON.stringify(event,null,2));
           if (!event?.message?.mid || event?.read?.mid) continue;
           await dmQueue.add(
             'save-dm',
