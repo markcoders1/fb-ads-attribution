@@ -86,7 +86,7 @@ app.post(
       console.log('[Webhook] Not an Instagram event');
       return res.sendStatus(404);
     }
-
+    res.status(200).send("EVENT_RECEIVED");
     try {
       const entries = body.entry || [];
       for (const entry of entries) {
@@ -106,7 +106,6 @@ app.post(
           );
         }
       }
-      return res.sendStatus(200);
     } catch (err) {
       console.error('[Webhook] Queue error', err);
       return res.sendStatus(503);
