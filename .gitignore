@@ -2,3 +2,4 @@
 node_modules
 server.js
 global-bundle.pem
+test.js
