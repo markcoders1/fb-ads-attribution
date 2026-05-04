@@ -122,8 +122,10 @@ app.post('/webhook-manychats', async (req, res) => {
   }
 
   try {
+    console.log("request body",req.body);
+    console.log("igId",igId);
     const data = await latestDmForSender(String(igId));
-    console.log(data);
+    console.log("data", data);
     console.log("[ManyChat webhook] data sent",data);
     return res.status(200).json({ data });
   } catch (err) {
